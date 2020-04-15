@@ -1,0 +1,22 @@
+ ***** CAIN2.35     Apr.23.2003 *****
+               Input File = C:\Users\k40128jc\Documents\CAIN\CBETA150\CBETA150.i
+HEADER 'CBETA 150MeV Compton';
+! CBETA 150MeV CAIN Spectrum Sim
+! Here a lot of values are hardcoded in so it isnt the clearest.
+! NOT MANY EVENTS HAPPEN IN ONE SHOT AS IS BASED ON RECIRCULATION NOT BRUTE FORCE
+ALLOCATE MP=5000;
+! Setting code for particles
+SET photon=1, electron=2, positron=3;
+SET reprate=1D6;
+SET MsgLevel=1; ! set flag for echo
+ SET MsgLevel=     1 ; (revised)     
+  SET MsgLevel= 1.00000000D+00
+! Setting Beam Parameters
+BEAM RIGHT, KIND=electron, NP=900000, AN=2D8, E0=150D6,
+   TXYS=(0,0,0,0), GCUTT=3.0, BETA=(1D-2,1D-2), EMIT=(3.65D-9,3.65D-9),
+   SIGT=1D-3, SPIN=(0,0,0);
+ (SUBR.BMINI) Too many macro-particles.
+  Use ALLOCATE command to increase MP.
+ ***** CAIN Abnormal Termination *****
+ ---- CPU time (seconds, # of calls) ----
+  Total           0.064        1  BMINI           0.000        1
