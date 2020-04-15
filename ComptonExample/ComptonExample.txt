@@ -1,0 +1,154 @@
+ ***** CAIN2.35     Apr.23.2003 *****
+               Input File = C:\Users\k40128jc\Documents\CAIN\ComptonExample\ComptonExample.i
+HEADER 'Compton Scattering';
+!!  Very high energy Compton scattering including nonlinear scattering.
+ALLOCATE MP=500000;
+SET   photon=1, electron=2, positron=3,
+   mm=1e-3, micron=1e-6, nm=1e-9, mu0=4*Pi*1e-7, psec=1e-12*Cvel,
+   nsec=1e-9*Cvel;
+! define variables for electron beam
+SET ee=250D9,  gamma=ee/Emass,  an=0.65D10,  sigz=0.1*mm,
+   betax=0.5*mm, betay=0.5*mm, emitx=5D-6/gamma, emity=8D-8/gamma,
+   sigx=Sqrt(emitx*betax), sigy=Sqrt(emity*betay),
+   ntcut=3.0;
+! define variables for laser
+SET  laserwl=1.053*micron, lambar=laserwl/(2*Pi), omegal=Hbarc/lambar,
+   rlx=0.1*mm, rly=0.1*mm, sigt=0.23*mm,   !! Rayleigh length and pulse length
+   pulseE=1,        !!  pulse energy in Joule
+   powerd=pulseE*Cvel/[Pi*lambar*sigt*Sqrt(2*Pi*rlx*rly)],
+   xisq=powerd*mu0*Cvel*(lambar/Emass)^2,   xi=Sqrt(xisq),
+   eta=omegal*ee/Emass^2, lambda=4*eta,
+   angle=0.0 ;
+SET MsgLevel=1;
+ SET MsgLevel=     1 ; (revised)     
+  SET MsgLevel= 1.00000000D+00
+BEAM  RIGHT, KIND=electron, NP=50000, AN=an, E0=ee,
+   TXYS=(0,0,0,0),  GCUTT=ntcut,
+   BETA=(betax,betay), EMIT=(emitx,emity), SIGT=sigz, SPIN=(0,0,-1);
+ +++ New Beam Defined: Right going Electron
+    Energy                              2.500D+11 eV
+    Number of real particles           6.5000D+09
+    Number of macro particles               50000
+    Weight of a macro-particle         1.2908D+05
+    Reference point (t,x,y,s) (m)       0.000D+00 0.000D+00 0.000D+00 0.000D+00
+    --- Transverse Distribution          Gaussian
+    Beta (x,y)                          5.000D-04 5.000D-04 m
+    Alpha (x,y)                          0.00D+00  0.00D+00
+    Emittance (x,y)                     1.022D-11 1.635D-13 rad.m
+    R.m.s. beam size (x,y)              7.148D-08 9.042D-09 m
+    Gaussian tail cut off                    3.50      3.50 sigma
+    Slope (x,y)                         0.000D+00 0.000D+00 rad
+    Crab angle (x,y)                    0.000D+00 0.000D+00 rad
+    Eta function (x,y)                  0.000D+00 0.000D+00 m
+    Eta prime (x,y)                     0.000D+00 0.000D+00
+    dAlpha/de (x,y)                     0.000D+00 0.000D+00
+    Beam roll in x-y plane              0.000D+00 rad
+    --- T distribution                   Gaussian
+    R.m.s.Bunch length and Gaussian cut 1.000D-04 m  3.00
+    --- E distribution                   Gaussian
+    Relat. energy spread and Gauss cut  0.000D+00      3.50
+    Relative coherent energy slope      0.000D+00 1/m
+    Spin (x,y,s)                          0.00000   0.00000  -1.00000
+   --- Statistics of generated data ---
+ +++Right-going electron     50000 macro particles    6.454D+09 real
+ Average (t,x,y,s)           -1.499D-07 4.900D-10-2.578D-11 0.000D+00 m
+ R.m.s.  (t,x,y,s)            9.887D-05 7.082D-08 8.953D-09 0.000D+00 m
+ Average (En,Px,Py,Ps)        2.500D+11 2.188D+05-2.099D+04 2.500D+11 eV
+ R.m.s.  (En,Px,Py,Ps)        1.575D-01 3.553D+07 4.502D+06 3.512D+03 eV
+ Spin    (|S|,Sx,Sy,Ss)         1.00000   0.00000   0.00000  -1.00000
+LASER LEFT, WAVEL=laserwl, POWERD=powerd,
+      TXYS=(0,0,0,0),
+      E3=(0,-Sin(angle),-Cos(angle)), E1=(1,0,0),
+      RAYLEIGH=(rlx,rly), SIGT=sigt, GCUTT=ntcut, STOKES=(0,1,0) ;
+ +++ Laser parameter defined
+    Interact with Right going beam only
+    Wavelength                            1.05300 micron
+    Photon energy                        1.177438 eV
+    Peak power density                  9.877D+21 Watt/m**2
+    Maximum Xi parameter                  0.63262
+    Focus (t,x,y,s)           0.000D+00 0.000D+00 0.000D+00 0.000D+00 meter
+    Direction of e1 vector               1.000000  0.000000  0.000000
+    Direction of e2 vector               0.000000 -1.000000  0.000000
+    Propagation direction (e3 vector)    0.000000  0.000000 -1.000000
+    Flush energy (num.integ. at z=)    -6.900D-04 0.000D+00 6.900D-04 m
+                                        9.955D-01 9.995D-01 9.955D-01 Joule
+    Flush energy (analytic)             9.951D-01 Joule
+    Stokes parameter                   (  0.00000  1.00000  0.00000)
+    Time profile of pulse              Gaussian
+    R.m.s. pulse length                    0.2300 mm
+    Longitudinal Gaussian tail cutoff       3.000 sigmas
+    Spatial profile of pulse           Gaussian
+    Rayleigh length in e1,e2 direction     0.1000    0.1000 mm
+    Transverse Gaussian tail cutoff         3.500 sigmas
+    Emittance dilution (x,y)              1.00000   1.00000 TDL
+    Rms beam size (x,y) at focus             2.89      2.89 micron
+LASERQED  COMPTON, NPH=5, XIMAX=1.1*xi, LAMBDAMAX=1.1*lambda ,
+       ENHANCE=1, PMAX=0.5 ;
+ +++ LASERQED +++
+    Interaction type                             Nonlinear Compton      
+    Polarization                                 Circular
+    Max.number of photons to be absorbed                  5
+    Maximum Xi                                      0.69589
+    Maximum Lambda                                  4.96010
+    Maximum event probability per step             0.500000
+    Number of final energy points                        20
+    Number of Xi's                                       20
+    Number of parameter Lambda                           20
+    Rate enhancement funtion =                   1
+SET MsgLevel=0;
+FLAG OFF ECHO;
+ +++ Cputime so far:    4.744000 sec
+    0.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going         0(0.000D+00)   50000(6.454D+09)       0(0.000D+00)
+   50.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going         0(0.000D+00)   50000(6.454D+09)       0(0.000D+00)
+  100.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going         0(0.000D+00)   50000(6.454D+09)       0(0.000D+00)
+  150.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going         3(3.872D+05)   50000(6.454D+09)       0(0.000D+00)
+  200.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going      1788(2.308D+08)   50000(6.454D+09)       0(0.000D+00)
+  250.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going     31241(4.033D+09)   50000(6.454D+09)       0(0.000D+00)
+  300.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going     65422(8.445D+09)   50000(6.454D+09)       0(0.000D+00)
+  350.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going     68185(8.801D+09)   50000(6.454D+09)       0(0.000D+00)
+  400.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going     68193(8.803D+09)   50000(6.454D+09)       0(0.000D+00)
+  450.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going     68193(8.803D+09)   50000(6.454D+09)       0(0.000D+00)
+  500.-th time step
+ +++ Number of   particles +++ macro(real) gamma, e-, e+
+ Right-going     68193(8.803D+09)   50000(6.454D+09)       0(0.000D+00)
+ --- Maximum transition probility of macro-particles
+      per time step in the previous PUSH ---
+          Laser Compton            7.1101D-02
+ +++ Cputime so far:    9.963000 sec
+ +++Right-going photon       68193 macro particles    8.803D+09 real
+ Average (t,x,y,s)            1.983D-07 3.682D-10-2.962D-11 0.000D+00 m
+ R.m.s.  (t,x,y,s)            9.476D-05 7.075D-08 9.261D-09 0.000D+00 m
+ Average (En,Px,Py,Ps)        7.573D+10 8.124D+04-1.450D+04 7.573D+10 eV
+ R.m.s.  (En,Px,Py,Ps)        7.285D+10 1.492D+07 1.905D+06 7.285D+10 eV
+ Stokes (|Xi|,Xi1,Xi2,Xi3)      0.03591   0.00000  -0.03591   0.00000
+ +++Right-going electron     50000 macro particles    6.454D+09 real
+ Average (t,x,y,s)           -1.499D-07 4.868D-10-2.550D-11 0.000D+00 m
+ R.m.s.  (t,x,y,s)            9.887D-05 7.082D-08 8.955D-09 0.000D+00 m
+ Average (En,Px,Py,Ps)        1.467D+11 1.080D+05-1.210D+03 1.467D+11 eV
+ R.m.s.  (En,Px,Py,Ps)        9.390D+10 2.480D+07 3.141D+06 9.390D+10 eV
+ Spin    (|S|,Sx,Sy,Ss)         0.81547   0.00000   0.00000  -0.81547
+ ---- CPU time (seconds, # of calls) ----
+  Total          11.068        1  BMINI           0.020        1  BMSTAT          0.008       13
+  LSRFLUSH        0.595        1  NLCPST0         0.004        1  DRIFT0          0.008        2
+  LSRQED          4.041      500  DRIFT1          0.488      500  WRBEAM          0.922        1
+  RDPLOT          0.171        3
